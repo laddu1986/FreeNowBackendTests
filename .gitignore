@@ -32,5 +32,6 @@ hs_err_pid*
 .classpath
 .project
 .settings/*
+output
 target
 test-output
