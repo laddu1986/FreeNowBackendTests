@@ -106,6 +106,35 @@ public class CommonSteps {
 		restTemplate.setContentType(ContentType.JSON);
 	}
 
+//	@When("^I set request body as '([^\"]+)'$")
+//	public void user_sets_request_body(String fileName) {
+//		LOGGER.info("Setting request body DATA..");
+//		String requestBody = null;
+//
+//		try {
+//			requestBody = FileOperations.readFromFile("src/test/resources/RequestBody/" + fileName);
+//
+//		} catch (FileNotFoundException e) {
+//			LOGGER.error("Error reading Request body json file - " + fileName);
+//			e.printStackTrace();
+//		}
+//
+//		Gson gson = new Gson();
+//		JsonArray jsonArray = gson.fromJson(requestBody, JsonElement.class).getAsJsonArray();
+//
+//		int count = 0;
+//		for (JsonElement jObj : jsonArray) {
+//			count++;
+//			JsonObject singleObject = jObj.getAsJsonObject();
+//			singleObject.addProperty("name",
+//					"API_AutoRun_" + testContext.scenarioContext.getContext(ContextEnums.CURRENT_SCENARIO_ID) + count
+//							+ "_" + testContext.scenarioContext.getContext(ContextEnums.TEST_RUN_TIMESTAMP));
+//		}
+//
+//		restTemplate.setRequestBody(jsonArray);
+//		LOGGER.info(jsonArray.toString());
+//
+//	}
 
 	@When("^User submits the 'GET' request$")
 	public void user_submits_the_GET_request() {
@@ -132,6 +161,14 @@ public class CommonSteps {
 
 	}
 
+	@Then("^Verify response status code is '([^\"]+)'$")
+	public void verify_user_validates_status_code(int statusCode) {
+		jp = restTemplate.getJsonPath(res);
+
+		// verify if the HTTP Status received in response was [statusCode]
+
+
+	}
 
 
 }
