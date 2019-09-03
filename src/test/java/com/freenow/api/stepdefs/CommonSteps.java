@@ -3,6 +3,7 @@ package com.freenow.api.stepdefs;
 import java.util.List;
 import java.util.Map;
 
+import com.freenow.api.common.User;
 import com.freenow.api.common.context.ContextEnums;
 import com.freenow.api.common.context.TestContext;
 import com.freenow.api.utils.RestTemplate;
@@ -39,20 +40,17 @@ public class CommonSteps {
 	}
 
 	@Given("^As a user I want to execute '([^\"]+)' endpoint$")
-	public void user_wants_to_execute_rules_endpoint(String endpoint) {
+	public void user_wants_to_execute_rules_endpoint(String endpointName) {
 		restTemplate.setBaseURI(configReader.getProperty("BASE_URL"));
 		LOGGER.info("Setting BASEURL as :" + configReader.getProperty("BASE_URL"));
 		// Setup Base Path
-		restTemplate.setBasePath(configReader.getProperty("BASE_PATH"));
-		LOGGER.info("Setting BASEPATH as :" + configReader.getProperty("BASE_PATH"));
+		restTemplate.setBasePath(configReader.getProperty(endpointName));
+		LOGGER.info("Setting BASEPATH as :" + configReader.getProperty(endpointName));
 		// used for ignoring ssl
 		restTemplate.relaxedHTTPSValidation();
 
-		// save API_ENDPOINT in context
-		testContext.scenarioContext.setContext(ContextEnums.API_ENDPOINT, endpoint);
-		LOGGER.info("Setting API_ENDPOINT as :" + endpoint);
-
-		LOGGER.info("endpoint" + endpoint);
+		// save API_ENDPOINT in scenario context
+		testContext.getScenarioContext().setContext(ContextEnums.API_ENDPOINT, configReader.getProperty(endpointName));
 
 	}
 
@@ -106,45 +104,16 @@ public class CommonSteps {
 		restTemplate.setContentType(ContentType.JSON);
 	}
 
-//	@When("^I set request body as '([^\"]+)'$")
-//	public void user_sets_request_body(String fileName) {
-//		LOGGER.info("Setting request body DATA..");
-//		String requestBody = null;
-//
-//		try {
-//			requestBody = FileOperations.readFromFile("src/test/resources/RequestBody/" + fileName);
-//
-//		} catch (FileNotFoundException e) {
-//			LOGGER.error("Error reading Request body json file - " + fileName);
-//			e.printStackTrace();
-//		}
-//
-//		Gson gson = new Gson();
-//		JsonArray jsonArray = gson.fromJson(requestBody, JsonElement.class).getAsJsonArray();
-//
-//		int count = 0;
-//		for (JsonElement jObj : jsonArray) {
-//			count++;
-//			JsonObject singleObject = jObj.getAsJsonObject();
-//			singleObject.addProperty("name",
-//					"API_AutoRun_" + testContext.scenarioContext.getContext(ContextEnums.CURRENT_SCENARIO_ID) + count
-//							+ "_" + testContext.scenarioContext.getContext(ContextEnums.TEST_RUN_TIMESTAMP));
-//		}
-//
-//		restTemplate.setRequestBody(jsonArray);
-//		LOGGER.info(jsonArray.toString());
-//
-//	}
-
 	@When("^User submits the 'GET' request$")
 	public void user_submits_the_GET_request() {
-		LOGGER.info("GETTING DATA..");
-		res = restTemplate.getResponsebyPath(testContext.scenarioContext.getContext(ContextEnums.API_ENDPOINT).toString());
+		LOGGER.info("GETTING DATA.. FROM.." + testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT));
+		//res = restTemplate.getResponsebyPath(testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT).toString());
+		res = restTemplate.getResponse();
 
 		LOGGER.info("GET Response " + res.asString());
 
-		// save response
-		testContext.scenarioContext.setResponse(ContextEnums.RESPONSE, res);
+		// save GET response in scenario context
+		testContext.getScenarioContext().setResponse(ContextEnums.RESPONSE, res);
 
 	}
 
@@ -152,12 +121,12 @@ public class CommonSteps {
 	public void user_submits_the_POST_request() {
 		LOGGER.info("POSTING DATA..");
 		res = restTemplate
-				.getPOSTResponsebyPath(testContext.scenarioContext.getContext(ContextEnums.API_ENDPOINT).toString());
+				.getPOSTResponsebyPath(testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT).toString());
 
 		LOGGER.info("POST Response " + res.asString());
 
-		// save response
-		testContext.scenarioContext.setResponse(ContextEnums.RESPONSE, res);
+		// save POST response in scenario context
+		testContext.getScenarioContext().setResponse(ContextEnums.RESPONSE, res);
 
 	}
 
@@ -166,6 +135,15 @@ public class CommonSteps {
 		jp = restTemplate.getJsonPath(res);
 
 		// verify if the HTTP Status received in response was [statusCode]
+
+
+	}
+
+	@Then("^Verify GET Users schema and fields$")
+	public void validate_received_get_user_response() {
+		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+		User user = res.as(User.class);
+		LOGGER.info("name is:" + user.getName());
 
 
 	}

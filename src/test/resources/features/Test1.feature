@@ -1,10 +1,14 @@
 @api
-Feature: Title of your feature
+Feature: Searching for user
   I want to use this template for my feature file
 
   @api1
-  Scenario: Title of your scenario
-    Given As a user I want to execute 'getstories/?username=9gag' endpoint
-    When I set headers as
-    | contentType | application/json |
+  Scenario: Searching for a valid user
+    Given As a user I want to execute 'USERS_BASE_PATH' endpoint
+    When I set query params as
+    | username    | Samantha |
+    And User submits the 'GET' request
+    Then Verify response status code is '200'
+    And Verify GET Users schema and fields
+
 

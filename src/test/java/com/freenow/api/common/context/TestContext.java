@@ -23,7 +23,6 @@ public class TestContext {
 		logUtils = LogUtils.getInstance(TestContext.class);
 		configReader = ConfigReader.getInstance();
 		restTemplate = RestTemplate.getInstance();
-
 	}
 
 	public ScenarioContext getScenarioContext() {
@@ -33,7 +32,6 @@ public class TestContext {
 	public ConfigReader getConfigReader() {
 		return configReader;
 	}
-
 
 	public LogUtils getLogUtils() {
 		return logUtils;

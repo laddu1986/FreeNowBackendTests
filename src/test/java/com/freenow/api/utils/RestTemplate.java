@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
- * This is class contains all the restAssured related getter/setter methods
+ * This class is a RestAssured Template class which contains all the restAssured related getter/setter methods
  * @author Kushal Bhalaik
  */
 public class RestTemplate {
-	private static RestTemplate apiUtilsInstance = null;
+	private static RestTemplate templateInstance = null;
 	private RequestSpecification httpRequest;
 
 	private RestTemplate() {
@@ -25,15 +25,14 @@ public class RestTemplate {
 	}
 
 	public static RestTemplate getInstance() {
+		if (templateInstance == null)
+			templateInstance = new RestTemplate();
 
-		if (apiUtilsInstance == null)
-			apiUtilsInstance = new RestTemplate();
-
-		return apiUtilsInstance;
+		return templateInstance;
 	}
 
 	public void resetRestAssured() {
-		apiUtilsInstance = null;
+		templateInstance = null;
 	}
 
 	// Sets Base URI

@@ -22,8 +22,7 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 @CucumberOptions( features = { "src/test/resources/features" },
 	glue = { "com.freenow.api.stepdefs" },
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter:", "rerun:target/rerun.txt" }, 
-	tags = { "@api" }, 
-	dryRun = false,
+	tags = { "@api" },
 	monochrome = true 
 ) 
 
@@ -51,12 +50,12 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 
 	@AfterClass
 	public static void reporterTeardown() throws UnknownHostException {
-		
+
 		Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
 		Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
 		Reporter.setSystemInfo("Host Machine", InetAddress.getLocalHost().getHostName());
-		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name").toString());
-		Reporter.setSystemInfo("Web App Name", "Qualys - Security Analysis");
+		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name"));
+		Reporter.setSystemInfo("Web App Name", "Blog.me");
 		
 
 		if(null != System.getProperty("mode")) {
@@ -87,9 +86,7 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 		
 		ExtentHelper.createAssetsDirectory();
 		Reporter.getExtentReport().flush();
-		//ExtentHelper.replaceEmbeddedLinks("Runner");
+
 	}
-	
-	
 
 }
