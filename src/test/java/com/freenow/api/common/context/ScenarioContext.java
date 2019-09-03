@@ -21,6 +21,10 @@ public class ScenarioContext {
 	public Object getContext(ContextEnums key) {
 		return scenarioContext.get(key.toString());
 	}
+
+	public Object getContext(String key) {
+		return scenarioContext.get(key);
+	}
 	
 	public void setResponse(ContextEnums key, Response value) {
 		scenarioContext.put(key.toString(), value);

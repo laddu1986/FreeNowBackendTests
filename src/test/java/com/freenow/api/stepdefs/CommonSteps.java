@@ -1,11 +1,13 @@
 package com.freenow.api.stepdefs;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.freenow.api.common.context.ContextEnums;
 import com.freenow.api.common.context.TestContext;
+import com.freenow.api.common.model.post.Post;
 import com.freenow.api.common.model.user.User;
 import com.freenow.api.utils.RestTemplate;
 import com.freenow.global.utils.ConfigReader;
@@ -40,11 +42,14 @@ public class CommonSteps {
 		configReader = testContext.getConfigReader();
 	}
 
+	@When("^User executes '([^\"]+)' endpoint$")
 	@Given("^As a user I want to execute '([^\"]+)' endpoint$")
-	public void user_wants_to_execute_rules_endpoint(String endpointName) {
+	public void user_wants_to_execute_an_endpoint(String endpointName) {
+
 		restTemplate.setBaseURI(configReader.getProperty("BASE_URL"));
 		LOGGER.info("Setting BASEURL as :" + configReader.getProperty("BASE_URL"));
 		// Setup Base Path
+		restTemplate.resetBasePath();
 		restTemplate.setBasePath(configReader.getProperty(endpointName));
 		LOGGER.info("Setting BASEPATH as :" + configReader.getProperty(endpointName));
 		// used for ignoring ssl
@@ -55,9 +60,18 @@ public class CommonSteps {
 
 	}
 
+	@When("^I set '([^\"]+)' as '([^\"]+)' in query params$")
+	public void i_set_queryparam_as(String queryParamName, String queryParamValue) {
+		LOGGER.info("Setting query params " + queryParamName + " as.." + queryParamValue);
+		Map<String, String> postsRequestQueryParams = new HashMap<>();
+		postsRequestQueryParams.put(queryParamName, String.valueOf(testContext.getScenarioContext().getContext(queryParamValue)));
+		restTemplate.setRequestQueryParams(postsRequestQueryParams);
+
+	}
+
 	@When("^I set query params as$")
 	public void user_sets_query_params(Map<String, String> queryParams) {
-		LOGGER.info("Setting query params DATA as..");
+		LOGGER.info("Setting query params for the request..");
 		Map<String, String> newParams = queryParams;
 		for (Map.Entry<String, String> entry : newParams.entrySet()) {
 
@@ -74,9 +88,12 @@ public class CommonSteps {
 						queryString = queryString + "&" + entry.getKey() + "=" + keyValues[i];
 					}
 				}
+
 				try {
 					newParams.put(entry.getKey(), queryString);
 				} catch (UnsupportedOperationException e) {
+					e.printStackTrace();
+					LOGGER.fail("Error reading Query Param map");
 				}
 
 			}
@@ -105,8 +122,8 @@ public class CommonSteps {
 		restTemplate.setContentType(ContentType.JSON);
 	}
 
-	@When("^User submits the 'GET' request$")
-	public void user_submits_the_GET_request() {
+	@When("^User submits the 'GET' request and stores response$")
+	public void user_submits_the_GET_request_and_save_response() {
 		LOGGER.info("GETTING DATA.. FROM.." + testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT));
 		//res = restTemplate.getResponsebyPath(testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT).toString());
 		res = restTemplate.getResponse();
@@ -142,10 +159,49 @@ public class CommonSteps {
 
 	@Then("^Verify GET Users schema and fields$")
 	public void validate_received_get_user_response() {
+		//get user response from ScenarioContext and match with USER model
 		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
 		List<User> user = Arrays.asList(res.as(User[].class));
 		LOGGER.info("username is:" + user.get(0).getUsername());
 		LOGGER.info("name is:" + user.get(0).getName());
+	}
+
+	@When("^I store userId for current username$")
+	public void store_userId_for_current_user() {
+		//get user response from ScenarioContext and match with USER model
+		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+		List<User> user = Arrays.asList(res.as(User[].class));
+
+		//save userId for the current user i.e. Samantha
+		testContext.getScenarioContext().setContext(ContextEnums.RETRIEVED_USER_ID, user.get(0).getId());
+
+	}
+
+	@Then("^Verify GET Posts schema and fields$")
+	public void validate_received_get_posts_response() {
+		//get user response from ScenarioContext and match with POST model
+		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+		List<Post> listOfPosts = Arrays.asList(res.as(Post[].class));
+
+		LOGGER.info("POST Response " + listOfPosts.size());
+
+	}
+
+	@When("^I store list of available postIds for current username$")
+	public void store_list_of_postIds_for_current_username() {
+		//get user response from ScenarioContext and match with POST model
+		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+		List<Post> listOfPosts = Arrays.asList(res.as(Post[].class));
+
+		Integer[] listOfPostIds = new Integer[listOfPosts.size()];
+		int i=0;
+		for(Post singlePost: listOfPosts){
+			listOfPostIds[i] = singlePost.getId();
+			i++;
+		}
+
+		//save list of postIds for the current user i.e. Samantha
+		testContext.getScenarioContext().setContext(ContextEnums.RETRIEVED_USER_ID, listOfPostIds);
 
 	}
 
