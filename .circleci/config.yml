@@ -32,7 +32,7 @@ jobs:
           command: mvn test -Denv="test" -Dcucumber.options="./src/test/resources/features/*" -Dcucumber.options="--tags @api"
       - store_test_results:
           path: output
-		  
+          
   release-snapshot:
     docker:
       - image: circleci/openjdk:8u171-jdk
