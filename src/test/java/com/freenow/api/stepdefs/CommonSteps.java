@@ -1,11 +1,12 @@
 package com.freenow.api.stepdefs;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.freenow.api.common.User;
 import com.freenow.api.common.context.ContextEnums;
 import com.freenow.api.common.context.TestContext;
+import com.freenow.api.common.model.user.User;
 import com.freenow.api.utils.RestTemplate;
 import com.freenow.global.utils.ConfigReader;
 import com.freenow.global.utils.LogUtils;
@@ -142,9 +143,9 @@ public class CommonSteps {
 	@Then("^Verify GET Users schema and fields$")
 	public void validate_received_get_user_response() {
 		res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
-		User user = res.as(User.class);
-		LOGGER.info("name is:" + user.getName());
-
+		List<User> user = Arrays.asList(res.as(User[].class));
+		LOGGER.info("username is:" + user.get(0).getUsername());
+		LOGGER.info("name is:" + user.get(0).getName());
 
 	}
 

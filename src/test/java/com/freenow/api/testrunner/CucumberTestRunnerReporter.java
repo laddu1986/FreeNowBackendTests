@@ -22,7 +22,7 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 @CucumberOptions( features = { "src/test/resources/features" },
 	glue = { "com.freenow.api.stepdefs" },
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter:", "rerun:target/rerun.txt" }, 
-	tags = { "@api" },
+	tags = { "@api1" },
 	monochrome = true 
 ) 
 
@@ -50,13 +50,11 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 
 	@AfterClass
 	public static void reporterTeardown() throws UnknownHostException {
-
 		Reporter.loadXMLConfig(new File("src/test/resources/extent-config.xml"));
 		Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
 		Reporter.setSystemInfo("Host Machine", InetAddress.getLocalHost().getHostName());
 		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name"));
 		Reporter.setSystemInfo("Web App Name", "Blog.me");
-		
 
 		if(null != System.getProperty("mode")) {
 			 if(!System.getProperty("mode").equalsIgnoreCase("api")){
@@ -73,7 +71,6 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 		Reporter.setTestRunnerOutput("<pre><h4> Logs : " + "</h4></pre>");
 		
 		try {
-			
 			Reporter.setTestRunnerOutput(ExtentHelper.getFinalLogs());
 			
 		} catch (IOException e) {

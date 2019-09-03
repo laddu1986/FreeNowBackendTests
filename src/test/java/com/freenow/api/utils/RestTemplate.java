@@ -20,8 +20,8 @@ public class RestTemplate {
 	private RequestSpecification httpRequest;
 
 	private RestTemplate() {
-		httpRequest = RestAssured.given()
-				.config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig(ObjectMapperType.GSON)));
+		httpRequest = RestAssured.given();
+			//	.config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig(ObjectMapperType.GSON)));
 	}
 
 	public static RestTemplate getInstance() {
