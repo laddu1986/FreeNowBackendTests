@@ -20,8 +20,7 @@ public class RestTemplate {
 	private RequestSpecification httpRequest;
 
 	private RestTemplate() {
-		httpRequest = RestAssured.given();
-			//	.config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig(ObjectMapperType.GSON)));
+		httpRequest = RestAssured.given().config(RestAssured.config().objectMapperConfig(new ObjectMapperConfig(ObjectMapperType.GSON)));
 	}
 
 	public static RestTemplate getInstance() {
@@ -73,6 +72,11 @@ public class RestTemplate {
 	// Sets RequestBody using JsonPath
 	public void setRequestBody(JsonPath requestBodyArray) {
 		httpRequest.body(requestBodyArray);
+	}
+
+	// Sets query params
+	public void setRequestQueryParams(String paramName, String paramValue) {
+		httpRequest.queryParams(paramName, paramValue);
 	}
 
 	// Sets query params

@@ -1,6 +1,6 @@
 @api
 Feature: Searching for user
-  I want to use this template for my feature file
+  e2e test case
 
   @api1
   Scenario: Searching for a valid user
@@ -17,5 +17,11 @@ Feature: Searching for user
     Then Verify response status code is '200'
     And Verify GET Posts schema and fields
     When I store list of available postIds for current username
+    And User executes 'COMMENTS_BASE_PATH' endpoint
+    When I set list of 'postId' as 'RETRIEVED_POST_IDS_FOR_USER' in query params
+    And User submits the 'GET' request and stores response
+    Then Verify response status code is '200'
+    And Verify GET Posts schema and fields
+    Then Verify email format for each retrieved comment
 
 
