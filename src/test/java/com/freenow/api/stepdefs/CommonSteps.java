@@ -53,7 +53,7 @@ public class CommonSteps {
         restTemplate.setBasePath(configReader.getProperty(endpointName));
         LOGGER.info("Setting BASEPATH as :" + configReader.getProperty(endpointName));
         // used for ignoring ssl
-        restTemplate.relaxedHTTPSValidation();
+        //restTemplate.relaxedHTTPSValidation();
 
         // save API_ENDPOINT in scenario context
         testContext.getScenarioContext().setContext(ContextEnums.API_ENDPOINT, configReader.getProperty(endpointName));
@@ -137,7 +137,6 @@ public class CommonSteps {
         LOGGER.info("Retrieving response from.. : /" + testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT));
         //res = restTemplate.getResponsebyPath(testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT).toString());
         res = restTemplate.getResponse();
-
 
         LOGGER.info("Response retrieved as : " + res.asString());
 
