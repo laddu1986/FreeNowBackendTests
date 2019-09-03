@@ -14,7 +14,7 @@ import cucumber.api.java.Before;
 public class Hooks {
 
     private static ConfigReader configReader;
-    private static RestTemplate restUtils;
+    private static RestTemplate restTemplate;
     private static LogUtils LOGGER;
 
     private TestContext testContext;
@@ -22,7 +22,7 @@ public class Hooks {
     public Hooks(TestContext context) {
         testContext = context;
         configReader = testContext.getConfigReader();
-        restUtils = testContext.getRestTemplate();
+        restTemplate = testContext.getRestTemplate();
         LOGGER = testContext.getLogUtils();
 
         LOGGER.info("Setting BASEURI as :" + configReader.getProperty("BASE_URL"));
@@ -38,6 +38,9 @@ public class Hooks {
 
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_ID, scenarioID);
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_NAME, scenario.getName()); // save in scenario context
+
+        restTemplate.setBaseURI(configReader.getProperty("BASE_URL"));
+        LOGGER.info("Setting BASEURL as :" + configReader.getProperty("BASE_URL"));
     }
 
     /*
@@ -49,8 +52,8 @@ public class Hooks {
     public void tearDown() {
 
         // Reset ApiUtils Values
-        LOGGER.info("Resetting  RestUtils instance..");
-        restUtils.resetRestAssured();
+        LOGGER.info("Resetting RestTemplate instance..");
+        restTemplate.resetRestAssured();
 
         LOGGER.info("Test Run Complete \n");
     }
