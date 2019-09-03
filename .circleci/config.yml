@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Run tests
           command: mvn test -Denv="test" -Dcucumber.options="./src/test/resources/features/*" -Dcucumber.options="--tags @api"
-	  - store_test_results:
+      - store_test_results:
           path: output
 		  
   release-snapshot:
