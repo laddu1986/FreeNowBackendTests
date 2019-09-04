@@ -31,7 +31,7 @@ jobs: # a collection of steps
         # Run Cucumber Tests using maven
       - run:
           name: Run tests
-          command: mvn test -Denv="test" -Dcucumber.options="./src/test/resources/features/*" -Dcucumber.options="--tags @api"
+          command: mvn test -Denv="test" -Dcucumber.options="features/*" -Dcucumber.options="--tags @api" -Dmode="api"
         # save test results
       - store_artifacts:
           path: ~/repo/output/test

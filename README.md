@@ -32,7 +32,7 @@ This framework uses Java-Cucumber-TestNG along with RestAssured
  - type following command : 
  
  		```> mvn install```
- 		```> mvn test -Denv="test" -Dcucumber.options="./src/test/resources/features/*" -Dcucumber.options="--tags @api" -Dmode="api" ```
+ 		```> mvn test -Denv="test" -Dcucumber.options="features/*" -Dcucumber.options="--tags @api" -Dmode="api" ```
  			
  			**-Denv** examples "test" or "dev"
  			**-Dqweb** can take values "api"

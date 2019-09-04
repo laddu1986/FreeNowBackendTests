@@ -38,12 +38,14 @@
     </build>
 
     <dependencies>
+        <!-- Extent Reports Dependency -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>3.0.6</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Extent Cucumber Plugin Dependency -->
         <dependency>
             <groupId>com.vimalselvam</groupId>
             <artifactId>cucumber-extentsreport</artifactId>
@@ -75,6 +77,7 @@
             <version>2.0.2-beta</version>
         </dependency>
 
+        <!-- Cucumber Dependencies -->
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-core</artifactId>

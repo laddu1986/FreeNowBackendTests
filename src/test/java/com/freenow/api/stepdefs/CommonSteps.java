@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.freenow.api.utils.Assertions;
 import org.apache.commons.validator.routines.EmailValidator;
 import com.freenow.api.common.context.ContextEnums;
 import com.freenow.api.common.context.TestContext;
@@ -21,7 +22,8 @@ import cucumber.api.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.testng.Assert;
+
+import static com.freenow.api.utils.Assertions.*;
 
 /*
  * This class contains all the Base API Test Steps
@@ -34,6 +36,7 @@ public class CommonSteps {
     public RestTemplate restTemplate;
     public LogUtils LOGGER;
     public ConfigReader configReader;
+    public Assertions assertions ;
 
     TestContext testContext;
 
@@ -53,7 +56,7 @@ public class CommonSteps {
         restTemplate.setBasePath(configReader.getProperty(endpointName));
         LOGGER.info("Setting BASEPATH as :" + configReader.getProperty(endpointName));
         // used for ignoring ssl
-        //restTemplate.relaxedHTTPSValidation();
+        restTemplate.relaxedHTTPSValidation();
 
         // save API_ENDPOINT in scenario context
         testContext.getScenarioContext().setContext(ContextEnums.API_ENDPOINT, configReader.getProperty(endpointName));
@@ -148,9 +151,8 @@ public class CommonSteps {
     @Then("^Verify response status code is '([^\"]+)'$")
     public void verify_user_validates_status_code(int statusCode) {
         jp = restTemplate.getJsonPath(res);
-
         // verify if the HTTP Status received in response was [statusCode]
-
+        assertEquals(statusCode, 200, "Response Http Status code is as not as expected");
 
     }
 
@@ -221,7 +223,7 @@ public class CommonSteps {
                         System.out.println(">>>>>>>>>Found Mail :" + interMap.get(interMapkey));
                         String emailId = interMap.get(interMapkey).toString();
                         boolean validEmail = EmailValidator.getInstance().isValid(emailId);
-                        Assert.assertTrue(validEmail);
+                        assertTrue(validEmail, "Email field has invalid format");
                     }
                 }
             } else {

@@ -19,10 +19,10 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
 
 
 /* * This class provides Main TestRunner for all the features */
-@CucumberOptions(  features = "classpath:features",
+@CucumberOptions( features = { "features" },
 	glue = { "com.freenow.api.stepdefs" },
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter:", "rerun:target/rerun.txt" }, 
-	tags = { "@api1" },
+	tags = { "@api" },
 	monochrome = true 
 ) 
 
