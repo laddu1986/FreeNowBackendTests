@@ -25,10 +25,15 @@ public class Hooks {
         restTemplate = testContext.getRestTemplate();
         LOGGER = testContext.getLogUtils();
 
+        //Stores Current Run Timestamp
         testContext.scenarioContext.setContext(ContextEnums.TEST_RUN_TIMESTAMP,
                 System.getProperty("TEST_RUN_TIMESTAMP"));
     }
 
+    /*
+     * This method runs before any steps for a scenario
+     *
+     */
     @Before(order = 0)
     public void beforeScenario(Scenario scenario) {
         String scenarioID = RandomStringUtils.random(5, true, true);
@@ -42,8 +47,7 @@ public class Hooks {
     }
 
     /*
-     * This method runs at the last of a test case run and closes current driver
-     * instance
+     * This method runs at the last of a test case run and resets RestTemplate instance
      *
      */
     @After(order = 0)
@@ -57,7 +61,7 @@ public class Hooks {
     }
 
     /*
-     * This method attaches failure screenshot (if any) to extent Report
+     * This method checks if a scenario failed at any point
      */
     @After(order = 1)
     public void afterScenario(Scenario scenario) {

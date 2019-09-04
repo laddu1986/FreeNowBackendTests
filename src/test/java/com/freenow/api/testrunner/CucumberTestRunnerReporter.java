@@ -54,7 +54,7 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 		Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
 		Reporter.setSystemInfo("Host Machine", InetAddress.getLocalHost().getHostName());
 		Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name"));
-		Reporter.setSystemInfo("Web App Name", "Blog.me");
+		Reporter.setSystemInfo("Web App Name", "https://jsonplaceholder.typicode.com");
 
 		if(null != System.getProperty("mode")) {
 			 if(!System.getProperty("mode").equalsIgnoreCase("api")){
