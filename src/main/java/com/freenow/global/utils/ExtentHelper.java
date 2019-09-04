@@ -37,10 +37,13 @@ public class ExtentHelper {
       List<String> logList = new ArrayList<>(0);
 
       while ((line = bis.readLine()) != null) {
-         if (line.toUpperCase().contains("ERROR ")) {
+         if (line.contains("ERROR ")) {
             logList.add("<span ><h5><mark style=\"color:red;\">" + line + "</mark></h5></span>");
-         } else if (line.toUpperCase().contains("PASS ")) {
+         } else if (line.contains("PASS ")) {
             logList.add("<span style=\"color:green; font-weight:bold\">" + line + "</span><br>");
+         } else if (line.contains("CODE ")) {
+            logList.add("<button class=\"collapsible\">Response Content:</button>\n" +
+                    "<div class=\"content\">\n" + line + "</p></div>");
          } else {
             logList.add("<span style=\"color:black;\">" + line + "</span><br>");
          }

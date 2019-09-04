@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.freenow.api.common.model.post.Comment;
 import com.freenow.api.utils.Assertions;
 import org.apache.commons.validator.routines.EmailValidator;
 import com.freenow.api.common.context.ContextEnums;
@@ -24,6 +25,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import static com.freenow.api.utils.Assertions.*;
+import static com.freenow.api.utils.TestUtils.validateHttpStatus;
+import static com.freenow.api.utils.TestUtils.validateResponseSchema;
 
 /*
  * This class contains all the Base API Test Steps
@@ -141,7 +144,7 @@ public class CommonSteps {
         //res = restTemplate.getResponsebyPath(testContext.getScenarioContext().getContext(ContextEnums.API_ENDPOINT).toString());
         res = restTemplate.getResponse();
 
-        LOGGER.info("Response retrieved as : " + res.asString());
+        LOGGER.code("Response retrieved as : " + res.asString());
 
         // save GET response in scenario context
         testContext.getScenarioContext().setResponse(ContextEnums.RESPONSE, res);
@@ -150,16 +153,16 @@ public class CommonSteps {
 
     @Then("^Verify response status code is '([^\"]+)'$")
     public void verify_user_validates_status_code(int statusCode) {
-        jp = restTemplate.getJsonPath(res);
         // verify if the HTTP Status received in response was [statusCode]
-        assertEquals(statusCode, 200, "Response Http Status code is as not as expected");
-
+        validateHttpStatus(res, statusCode );
     }
 
     @Then("^Verify GET Users schema and fields$")
     public void validate_received_get_user_response() {
         //get user response from ScenarioContext and match with USER model
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+        validateResponseSchema(res, "user.json");
+
         List<User> user = Arrays.asList(res.as(User[].class));
         LOGGER.info("username is:" + user.get(0).getUsername());
         LOGGER.info("name is:" + user.get(0).getName());
@@ -180,6 +183,8 @@ public class CommonSteps {
     public void validate_received_get_posts_response() {
         //get user response from ScenarioContext and match with POST model
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+        validateResponseSchema(res, "post.json");
+
         List<Post> listOfPosts = Arrays.asList(res.as(Post[].class));
 
         LOGGER.info("POST Response " + listOfPosts.size());
@@ -204,31 +209,25 @@ public class CommonSteps {
 
     }
 
+    @Then("^Verify GET Comment schema and fields$")
+    public void validate_received_get_comments_response() {
+        //get user response from ScenarioContext and match with POST model
+        res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+        validateResponseSchema(res, "comment.json");
+
+    }
+
     @Then("^Verify email format for each retrieved comment$")
     public void validate_email_format_for_each_comment() {
         //get /comments response from ScenarioContext and map it to a List Object
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
 
-        List<Object> resMap = res.as(List.class);
-        for (Object currentItem : resMap) {
-            if (currentItem instanceof String) {
-                System.out.println(">>>>>>>>>>string" + currentItem);
-            } else if (currentItem instanceof Integer) { // Number
-                System.out.println(">>>>>>>>>>Integer" + currentItem);
-            } else if (currentItem instanceof Map) {
-                Map<String, Object> interMap = (Map<String, Object>) currentItem;
-                System.out.println(">>>>>>>>>currentItem is a map :");
-                for (String interMapkey : interMap.keySet()) {
-                    if (interMapkey.equalsIgnoreCase("email")) {
-                        System.out.println(">>>>>>>>>Found Mail :" + interMap.get(interMapkey));
-                        String emailId = interMap.get(interMapkey).toString();
-                        boolean validEmail = EmailValidator.getInstance().isValid(emailId);
-                        assertTrue(validEmail, "Email field has invalid format");
-                    }
-                }
-            } else {
-                System.out.println(">>>>>>>others");
-            }
+        List<Comment> listOfComments = Arrays.asList(res.as(Comment[].class));
+        for (Comment currentComment : listOfComments) {
+            LOGGER.info("id is:" + currentComment.getId());
+            LOGGER.info("email is:" + currentComment.getemail());
+            boolean validEmail = EmailValidator.getInstance().isValid(currentComment.getemail());
+            assertTrue(validEmail, "Email field has invalid format : " + currentComment.getemail());
         }
     }
 

@@ -25,8 +25,6 @@ public class Hooks {
         restTemplate = testContext.getRestTemplate();
         LOGGER = testContext.getLogUtils();
 
-        LOGGER.info("Setting BASEURI as :" + configReader.getProperty("BASE_URL"));
-
         testContext.scenarioContext.setContext(ContextEnums.TEST_RUN_TIMESTAMP,
                 System.getProperty("TEST_RUN_TIMESTAMP"));
     }

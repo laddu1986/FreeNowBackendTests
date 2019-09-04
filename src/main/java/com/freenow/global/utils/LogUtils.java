@@ -88,6 +88,18 @@ public class LogUtils {
 
 	}
 
+	public void code(String message) {
+
+		Calendar cal = Calendar.getInstance();
+		Date currentTime = cal.getTime();
+
+		Logger.getRootLogger().setLevel(Level.INFO);
+
+		logger.info("CODE" + " " + currentTime + ": " + message);
+		writeToLogFile("CODE" + " " + currentTime + ": " + message);
+
+	}
+
 	public void debug(String message) {
 
 		Calendar cal = Calendar.getInstance();
@@ -136,7 +148,7 @@ public class LogUtils {
 
 		logger.error("FAIL" + " " + currentTime + ": " + message);
 		writeToLogFile("FAIL" + " " + currentTime + ": " + message);
-		throw new TestFailedException("Test step failed..");
+		throw new TestFailedException(message + ". Test step failed..");
 
 	}
 
