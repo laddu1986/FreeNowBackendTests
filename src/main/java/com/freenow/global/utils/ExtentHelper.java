@@ -94,7 +94,7 @@ public class ExtentHelper {
       String searchString4 = "<a href=\"#!\" class=\"brand-logo blue darken-3\">Extent</a>";
 
       String replaceString1 = "MaterialIcons.css";
-      String replaceString2 = "<link href='MaterialIcons.css' rel='stylesheet' /> <link href='extent.css' type='text/css' rel='stylesheet' />";
+      String replaceString2 = "<link href='MaterialIcons.css' rel='stylesheet' /> <link href='style.css' type='text/css' rel='stylesheet'> <link href='extent.css' type='text/css' rel='stylesheet' />";
       String replaceString3 = "extent.js";
       String replaceString4 = "<a href=\"#!\" class=\"brand-logo blue darken-3\" style=\"padding-left: 5px;\">Test Report</a>";
 
