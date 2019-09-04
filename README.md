@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/far11ven/freenow-backend-tests/tree/develop.svg?style=svg)](https://circleci.com/gh/far11ven/freenow-backend-tests/tree/develop)
+
 # freenow-backend-tests
 FREENOW - Backend Test Challenge
 
@@ -45,3 +47,11 @@ Logs are stored under respective date folder under "logs" directory path ```\out
 
 ## Reports: 
 Reports can be found at path ```\output\<env>\Test_Report_final.html``` (Automatically created after first run) and screenshots at ```\output\<env>\screenshots\```
+
+![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_TestReport.png)
+
+
+**CircleCI Dashboard:**
+
+![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_CircleCI.png)
+
