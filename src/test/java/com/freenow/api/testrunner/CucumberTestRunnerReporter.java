@@ -83,6 +83,7 @@ public class CucumberTestRunnerReporter extends AbstractTestNGCucumberTests {
 		
 		ExtentHelper.createAssetsDirectory();
 		Reporter.getExtentReport().flush();
+		ExtentHelper.replaceEmbeddedLinks("Runner"); // local resources for circle ci archive
 
 	}
 

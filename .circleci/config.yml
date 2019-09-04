@@ -33,7 +33,8 @@ jobs: # a collection of steps
           name: Run tests
           command: mvn test -Denv="test" -Dcucumber.options="./src/test/resources/features/*" -Dcucumber.options="--tags @api"
         # save test results
+      - store_artifacts:
+          path: ~/repo/output/test
+          destination: reports
       - store_test_results:
-          path: output
-
-  
+          path: ~/repo/output
