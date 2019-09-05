@@ -1,10 +1,18 @@
-@api @e2e
-Feature: E2E - Positive Scenario
-  @api1 @positive
-  Scenario: Searching a user By 'Username' and validating Email format on all that user post's comments
+@api @comment
+Feature: /comments endpoints validations
+
+  @api4.1 @positive
+  Scenario: Searching all comments present on /comment endpoint
+    Given As a user I want to execute 'COMMENTS_BASE_PATH' endpoint
+    And User submits the 'GET' request and stores response
+    Then Verify response status code is '200'
+    And Verify GET Comments schema and fields
+
+  @api4.2 @positive
+  Scenario: Searching individual posts for 'Username' and validating emails
     Given As a user I want to execute 'USERS_BASE_PATH' endpoint
     When I set query params as
-    | username    | Samantha |
+      | username    | Samantha |
     And User submits the 'GET' request and stores response
     Then Verify response status code is '200'
     And Verify GET Users returns single user record
@@ -17,10 +25,9 @@ Feature: E2E - Positive Scenario
     And Verify GET Posts schema and fields
     When I store list of available postIds for current username
     And User executes 'COMMENTS_BASE_PATH' endpoint
-    When I set list of 'postId' as 'RETRIEVED_POST_IDS_FOR_USER' in query params
-    And User submits the 'GET' request and stores response
-    Then Verify response status code is '200'
-    And Verify GET Comments schema and fields
-    And Verify email format for each retrieved comment
+    Then I iterate through individual 'postId' comments from 'RETRIEVED_POST_IDS_FOR_USER' and validate email format
+
+
+
 
 

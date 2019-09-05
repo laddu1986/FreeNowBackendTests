@@ -97,6 +97,7 @@ public class LogUtils {
 
 		logger.info("CODE" + " " + currentTime + ": " + message);
 		writeToLogFile("CODE" + " " + currentTime + ": " + message);
+		writeToLogFile("CODE-END");
 
 	}
 

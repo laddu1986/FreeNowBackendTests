@@ -44,9 +44,18 @@ public class ExtendedTestSteps {
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
         validateResponseSchema(res, "user.json");
 
-        List<User> user = Arrays.asList(res.as(User[].class));
-        //verify username searched for is also the one retrieved
-        assertEquals(user.get(0).getUsername(), (String) testContext.getScenarioContext().getContext(ContextEnums.ACTUAL_USER_NAME), "Retrieved Username doesn't match the actual searched username");
+        List<User> listOfUsers = Arrays.asList(res.as(User[].class));
+   
+        for(User currentUser : listOfUsers){
+            assertTrue(currentUser.getId() !=null,"User Id is missing from the /user response");
+            assertTrue(currentUser.getUsername()!=null,"Username is missing from the /user response");
+            assertTrue(currentUser.getName()!=null,"User's name is missing from the /user response");
+            assertTrue(currentUser.getPhone()!=null,"User phone no is missing from the /user response");
+            assertTrue(currentUser.getCompany()!=null,"User company is missing from the /user response");
+            assertTrue(currentUser.getWebsite()!=null,"User website is missing from the /user response");
+            assertTrue(currentUser.getAddress() !=null,"User Address is missing from the /user response");
+            assertTrue(currentUser.getEmail() !=null,"User Email is missing from the /user response");
+        }
 
         LOGGER.pass("Validated GET Users response schema");
     }
@@ -57,23 +66,35 @@ public class ExtendedTestSteps {
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
         validateResponseSchema(res, "user.json");
 
-        List<User> user = Arrays.asList(res.as(User[].class));
+        List<User> listOfUsers = Arrays.asList(res.as(User[].class));
         //verify username searched returns only one record
-        assertTrue(user.size() == 1, "There are more than one users with same username");
+        assertTrue(listOfUsers.size() == 1, "There are more than one users with same username");
+        //verify username searched for is also the one retrieved
+        assertEquals(listOfUsers.get(0).getUsername(), (String) testContext.getScenarioContext().getContext(ContextEnums.ACTUAL_USER_NAME), "Retrieved Username doesn't match the actual searched username");
 
         LOGGER.pass("Validated GET /users?username=somename returns only 1 record");
 
     }
 
     @Then("^Verify GET Users returns no user record$")
-    public void validate_received_get_user_has_no_single_record() {
-        //get user response from ScenarioContext and match with USER model
+    public void validate_received_get_user_has_no_record() {
+        //get user response from ScenarioContext
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
-        validateResponseSchema(res, "user.json");
 
         List<User> user = Arrays.asList(res.as(User[].class));
         //verify username searched returns only one record
         assertTrue(user.size() == 0, "User found with Username format 'username'");
+
+    }
+
+    @Then("^Verify GET Post returns no post record$")
+    public void validate_received_get_post_has_no_record() {
+        //get user response from ScenarioContext
+        res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+
+        List<Post> post = Arrays.asList(res.as(Post[].class));
+        //verify username searched returns only one record
+        assertTrue(post.size() == 0, "Post found with invalid postId ");
 
     }
 
@@ -95,6 +116,13 @@ public class ExtendedTestSteps {
         validateResponseSchema(res, "post.json");
 
         List<Post> listOfPosts = Arrays.asList(res.as(Post[].class));
+
+        for(Post currentPost : listOfPosts){
+            assertTrue(currentPost.getId() !=null,"Post Id is missing from the /post response");
+            assertTrue(currentPost.getBody() !=null,"Post Body is missing from the /post response");
+            assertTrue(currentPost.getTitle() !=null,"Post Title is missing from the /post response");
+            assertTrue(currentPost.getUserId() !=null,"Post UserId is missing from the /post response");
+        }
 
         LOGGER.pass("Validated GET Posts response schema");
 
@@ -118,22 +146,34 @@ public class ExtendedTestSteps {
 
     }
 
-    @Then("^Verify GET Comment schema$")
+    @Then("^Verify GET Comments schema and fields$")
     public void validate_received_get_comments_response() {
         //get user response from ScenarioContext and match with COMMENT model
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
         validateResponseSchema(res, "comment.json");
 
         LOGGER.pass("Validated GET comments response schema");
+        List<Comment> listOfComments = Arrays.asList(res.as(Comment[].class));
 
+        for(Comment currentComment : listOfComments){
+            assertTrue(currentComment.getId() !=null,"Comment Id is missing from the /comment response");
+            assertTrue(currentComment.getemail()!=null,"Comment's associated email is missing from the /comment response");
+            assertTrue(currentComment.getpostId()!=null,"Comment's linked PostId is missing from the /comment response");
+            assertTrue(currentComment.getname()!=null,"Comment name is missing from the /comment response");
+            assertTrue(currentComment.getBody()!=null,"Comment content is missing from the /comment response");
+
+        }
+
+        LOGGER.pass("Validated GET Users response schema");
     }
 
     @Then("^Verify email format for each retrieved comment$")
     public void validate_email_format_for_each_comment() {
         //get /comments response from ScenarioContext and map it to a List of Comments Object
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
-
         List<Comment> listOfComments = Arrays.asList(res.as(Comment[].class));
+
+        //validate email formats for all comments of all posts of userId retrieved from /comments?postId=i&postId=i+1&..postId=i+n
         validateEmailFormat(listOfComments);
         LOGGER.pass("Validated all posts comments for user");
     }
@@ -154,7 +194,6 @@ public class ExtendedTestSteps {
 
             //get /comments?postId=i response from ScenarioContext and map it to a List Object
             res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
-
             List<Comment> listOfPostComments = Arrays.asList(res.as(Comment[].class));
 
             //validate email formats for comments retrieved from /comments?postId=i

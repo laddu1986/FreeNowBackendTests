@@ -37,7 +37,7 @@ public class Hooks {
     @Before(order = 0)
     public void beforeScenario(Scenario scenario) {
         String scenarioID = RandomStringUtils.random(5, true, true);
-        LOGGER.info("Starting Test : " + scenario.getName() + " with id : " + scenarioID);
+        LOGGER.info("Starting Test : " + scenario.getName());
 
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_ID, scenarioID);
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_NAME, scenario.getName()); // save in scenario context
