@@ -56,10 +56,10 @@ Test Reports can be found at path ```\output\<env>\Test_Report_final.html``` (Au
 Logs are stored under respective date folder under "output/<env>/logs" directory path ```\output\<env>\logs\TestLog_<Timestamp>``` (Automatically created after first run)
 
 ### Successful Run Logs: 
-![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_TestLogs_pass.png)
+![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_TestLogs_pass.PNG)
 
 ### Failure Run Logs: 
-![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_TestLogs_fail.png)
+![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_TestLogs_fail.PNG)
 
 **CircleCI Dashboard:**
 
