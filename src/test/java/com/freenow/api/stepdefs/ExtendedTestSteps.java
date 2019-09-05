@@ -2,7 +2,7 @@ package com.freenow.api.stepdefs;
 
 import com.freenow.api.common.context.ContextEnums;
 import com.freenow.api.common.context.TestContext;
-import com.freenow.api.common.model.post.Comment;
+import com.freenow.api.common.model.comment.Comment;
 import com.freenow.api.common.model.post.Post;
 import com.freenow.api.common.model.user.User;
 import com.freenow.api.utils.RestTemplate;
@@ -11,14 +11,13 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import io.restassured.response.Response;
-import org.apache.commons.validator.routines.EmailValidator;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.freenow.api.utils.Assertions.*;
 import static com.freenow.api.utils.TestUtils.*;
 
-/*
+/**
  * This class contains all the Extended Steps used while interacting with /user, /post and /comment endpoints
  */
 public class ExtendedTestSteps {
@@ -57,7 +56,7 @@ public class ExtendedTestSteps {
             assertTrue(currentUser.getEmail() !=null,"User Email is missing from the /user response");
         }
 
-        LOGGER.pass("Validated GET Users response schema");
+        LOGGER.pass("Successfully verified GET Users schema and fields");
     }
 
     @Then("^Verify GET Users returns single user record$")
@@ -98,7 +97,7 @@ public class ExtendedTestSteps {
 
     }
 
-    @When("^I store userId for current username$")
+    @When("^Store userId for current username$")
     public void store_userId_for_current_user() {
         //get user response from ScenarioContext and match with USER model
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
@@ -124,11 +123,11 @@ public class ExtendedTestSteps {
             assertTrue(currentPost.getUserId() !=null,"Post UserId is missing from the /post response");
         }
 
-        LOGGER.pass("Validated GET Posts response schema");
+        LOGGER.pass("Successfully verified GET Posts schema and fields");
 
     }
 
-    @When("^I store list of available postIds for current username$")
+    @When("^Store list of available postIds for current username$")
     public void store_list_of_postIds_for_current_username() {
         //get user response from ScenarioContext and match with POST model
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
@@ -164,7 +163,7 @@ public class ExtendedTestSteps {
 
         }
 
-        LOGGER.pass("Validated GET Users response schema");
+        LOGGER.pass("Successfully verified GET Comments schema and fields");
     }
 
     @Then("^Verify email format for each retrieved comment$")
@@ -183,9 +182,11 @@ public class ExtendedTestSteps {
 
         Integer[] listOfPostIds = (Integer[]) testContext.getScenarioContext().getContext(ContextEnums.valueOf(queryParamsValueList));
 
+        //updates different parameter types upon "collision"
+        restTemplate.setRequestSpecificationParamConfig();
+
         for (int i = 0; i < listOfPostIds.length; i++) {
 
-            restTemplate.resetRequestQueryParams();
             //set postId = i in queryparams
             LOGGER.info("Setting query params " +  queryParamKey + " as : " + listOfPostIds[i]);
             restTemplate.setRequestQueryParams(queryParamKey, Integer.toString(listOfPostIds[i]));

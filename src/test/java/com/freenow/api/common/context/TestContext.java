@@ -6,12 +6,10 @@ import com.freenow.global.utils.LogUtils;
 
 /**
  * Using PicoContainer to share state between stepdefs in a scenario
- */
-/**
+ *
  * @author Kushal Bhalaik
  *
  */
-
 public class TestContext {
 	public ScenarioContext scenarioContext;
 	private static ConfigReader configReader;

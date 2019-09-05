@@ -6,6 +6,9 @@ import java.util.Map;
 
 import io.restassured.response.Response;
 
+/**
+ * This class provides all the getter/setters to be used for retriebving/storing Scenario Context
+ */
 public class ScenarioContext {
 
 	private Map<String, Object> scenarioContext;

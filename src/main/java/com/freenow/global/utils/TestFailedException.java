@@ -1,6 +1,6 @@
 package com.freenow.global.utils;
 
-/*
+/**
  * This class provides custom RuntimeException
 */
 public class TestFailedException extends RuntimeException {

@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.freenow.api.common.model.post.Comment;
+import com.freenow.api.common.model.comment.Comment;
 import com.freenow.global.utils.FileUtils;
 import com.freenow.global.utils.LogUtils;
 import com.google.common.base.Joiner;
@@ -16,7 +16,7 @@ import com.google.common.collect.Iterables;
 import io.restassured.response.Response;
 import org.apache.commons.validator.routines.EmailValidator;
 
-/*
+/**
  * This is class contains all the helper methods required by ApiTestSuite class
  * @author Kushal Bhalaik
  */
@@ -42,7 +42,7 @@ public class TestUtils {
 		try {
 			String schema = FileUtils.readFromFile("./src/test/resources/schemas/" + schemaName);
 			res.then().assertThat().body(matchesJsonSchema(schema));
-			LOGGER.info("Response Schema Validation is PASS");
+			LOGGER.pass("Response Schema Validation is PASS");
 
 		} catch (FileNotFoundException e) {
 			LOGGER.fail("Couldn't find [" +  schemaName + "] schema in src/test/resources/schemas folder");
@@ -59,7 +59,7 @@ public class TestUtils {
 		for (Comment currentComment : commentList) {
 			boolean validEmail = EmailValidator.getInstance().isValid(currentComment.getemail());
 			assertTrue(validEmail, "For postId : " + currentComment.getpostId() + " & commentId : " + currentComment.getId() + " email " + currentComment.getemail() + " format is not valid.");
-			LOGGER.info("For postId : " + currentComment.getpostId() + " & commentId " + currentComment.getId() + " email " + currentComment.getemail() + " format is valid.");
+			LOGGER.pass("For postId : " + currentComment.getpostId() + " & commentId " + currentComment.getId() + " email " + currentComment.getemail() + " format is valid.");
 		}
 
 	}

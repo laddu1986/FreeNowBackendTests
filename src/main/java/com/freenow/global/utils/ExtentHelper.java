@@ -14,8 +14,7 @@ import com.freenow.global.utils.ConfigReader;
 
 /**
  * This class provides Extent Helper methods
- */
-/**
+ *
  * @author Kushal Bhalaik
  *
  */
@@ -37,15 +36,22 @@ public class ExtentHelper {
       List<String> logList = new ArrayList<>(0);
 
       while ((line = bis.readLine()) != null) {
-         if (line.contains("ERROR ")) {
-            logList.add("<span ><h5><mark style=\"color:red;\">" + line + "</mark></h5></span>");
+         if (line.contains("START ")) {
+            logList.add("<button class=\"test-start\">" + line +"</button><br>\n");
+         } else if (line.contains("ERROR ")) {
+            logList.add("<span ><mark style=\"color:red;\">" + line + "</mark></span><br>");
          } else if (line.contains("PASS ")) {
-            logList.add("<span style=\"color:green; font-weight:bold\">" + line + "</span><br>");
-         } else if (line.contains("CODE ")) {
-            logList.add("<button class=\"collapsible\">Response Content:</button>\n" +
-                    "<div class=\"content\">\n" + line + "<br>");
+            logList.add("<span style=\"color:green;\">" + line + "</span><br>");
+         } else if (line.contains("FAIL ")) {
+            logList.add("<button class=\"collapsible\">Failure Stacktrace (click to see)</button>\n" +
+                    "<pre class=\"content\">\n" + line + "<br>");
+         }  else if(line.contains("FAIL-END")) {
+            logList.add("</p></pre>");
+         }else if (line.contains("CODE ")) {
+            logList.add("<button class=\"collapsible\">Actual Response (click to see)</button>\n" +
+                    "<pre class=\"content\">\n" + line + "<br>");
          }  else if(line.contains("CODE-END")) {
-            logList.add("</p></div>");
+            logList.add("</p></pre>");
          } else {
             logList.add(line + "<br>");
          }

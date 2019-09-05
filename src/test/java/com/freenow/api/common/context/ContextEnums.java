@@ -1,5 +1,7 @@
 package com.freenow.api.common.context;
-
+/**
+ * This Enum provides all the constants to be used for Storing Scenario Context
+ */
 public enum ContextEnums {
 	TEST_RUN_TIMESTAMP,
 	CURRENT_SCENARIO_ID,

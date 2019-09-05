@@ -1,4 +1,4 @@
-package com.freenow.api.common.model.post;
+package com.freenow.api.common.model.comment;
 
 import java.util.HashMap;
 import java.util.Map;

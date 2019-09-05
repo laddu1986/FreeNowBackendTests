@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 
-/*
+/**
  * This class provides instance of FileOperations for reading/writing data from a text file
 */
 public class FileUtils {

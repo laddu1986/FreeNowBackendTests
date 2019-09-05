@@ -17,7 +17,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.freenow.global.utils.TestFailedException;
 
-/*
+/**
  * This is a Singleton class, which provides instance of LogUtils for Logging capabilities
  */
 public class LogUtils {
@@ -88,6 +88,24 @@ public class LogUtils {
 
 	}
 
+	/*
+	 * This is a method for logging start of a test
+	 */
+    public void start(String message) {
+
+        Calendar cal = Calendar.getInstance();
+        Date currentTime = cal.getTime();
+
+        Logger.getRootLogger().setLevel(Level.INFO);
+
+        logger.info("START" + " " + currentTime + ": " + message);
+        writeToLogFile("START" + " " + currentTime + ": " + message);
+
+    }
+
+	/*
+	 * This is a method for logging actual code/response in <pre> format
+	 */
 	public void code(String message) {
 
 		Calendar cal = Calendar.getInstance();
@@ -149,10 +167,15 @@ public class LogUtils {
 
 		logger.error("FAIL" + " " + currentTime + ": " + message);
 		writeToLogFile("FAIL" + " " + currentTime + ": " + message);
+		writeToLogFile("CODE-END");
 		throw new TestFailedException(message + ". Test step failed..");
+
 
 	}
 
+	/*
+	 * This method writes log to logs folder with timestamp
+	 */
 	public void writeToLogFile(String content) {
 
 		FileWriter fw = null;

@@ -11,6 +11,9 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 
+/**
+ * This class provides before & after hooks for cucumber
+ */
 public class Hooks {
 
     private static ConfigReader configReader;
@@ -37,7 +40,7 @@ public class Hooks {
     @Before(order = 0)
     public void beforeScenario(Scenario scenario) {
         String scenarioID = RandomStringUtils.random(5, true, true);
-        LOGGER.info("Starting Test : " + scenario.getName());
+        LOGGER.start("Starting Test : " + scenario.getName());
 
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_ID, scenarioID);
         testContext.scenarioContext.setContext(ContextEnums.CURRENT_SCENARIO_NAME, scenario.getName()); // save in scenario context

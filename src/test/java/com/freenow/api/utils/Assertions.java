@@ -3,8 +3,8 @@ package com.freenow.api.utils;
 import com.freenow.global.utils.LogUtils;
 import org.testng.Assert;
 
-/*
- * This class provides instance of ConfigReader for reading values from "config.properties"
+/**
+ * This class provides custom Assertions (A wrapper around TestNG Assertions with Logging on failure)
 */
 public class Assertions {
 	private static LogUtils LOGGER = LogUtils.getInstance(Assertions.class);

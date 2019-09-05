@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-/*
+/**
  * This class provides instance of ConfigReader for reading values from "config.properties" & <env>/env.config
 */
 public class ConfigReader {
