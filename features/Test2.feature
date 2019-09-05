@@ -1,6 +1,6 @@
 @api
 Feature: GET /user validations
-  @api1 @positive
+  @api2 @positive
   Scenario: Searching a user By 'Username' returns single record
     Given As a user I want to execute 'USERS_BASE_PATH' endpoint
     When I set query params as
@@ -10,7 +10,7 @@ Feature: GET /user validations
     And Verify GET Users returns single user record
     And Verify GET Users schema and fields
 
-  @api1 @negative
+  @api2 @negative
   Scenario: Searching a user By 'username' format returns no results
     Given As a user I want to execute 'USERS_BASE_PATH' endpoint
     When I set query params as

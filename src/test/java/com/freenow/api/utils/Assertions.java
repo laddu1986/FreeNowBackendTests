@@ -14,7 +14,6 @@ public class Assertions {
 			Assert.assertTrue(condition, message);
 
 		} catch (AssertionError e) {
-
 			LOGGER.error(message + " : " + e);
 			Assert.fail(e.getMessage());
 

@@ -5,6 +5,7 @@ import com.freenow.api.common.context.TestContext;
 import com.freenow.api.common.model.post.Comment;
 import com.freenow.api.common.model.post.Post;
 import com.freenow.api.common.model.user.User;
+import com.freenow.api.utils.RestTemplate;
 import com.freenow.global.utils.LogUtils;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -26,9 +27,15 @@ public class ExtendedTestSteps {
     private LogUtils LOGGER;
     private TestContext testContext;
 
+    private RestTemplate restTemplate;
+    private CommonSteps commonSteps;
+
+
     public ExtendedTestSteps(TestContext context) {
         testContext = context;
         LOGGER = testContext.getLogUtils();
+        restTemplate = testContext.getRestTemplate();
+        commonSteps = new CommonSteps(testContext);
     }
 
     @Then("^Verify GET Users schema and fields$")
@@ -41,6 +48,7 @@ public class ExtendedTestSteps {
         //verify username searched for is also the one retrieved
         assertEquals(user.get(0).getUsername(), (String) testContext.getScenarioContext().getContext(ContextEnums.ACTUAL_USER_NAME), "Retrieved Username doesn't match the actual searched username");
 
+        LOGGER.pass("Validated GET Users response schema");
     }
 
     @Then("^Verify GET Users returns single user record$")
@@ -52,6 +60,8 @@ public class ExtendedTestSteps {
         List<User> user = Arrays.asList(res.as(User[].class));
         //verify username searched returns only one record
         assertTrue(user.size() == 1, "There are more than one users with same username");
+
+        LOGGER.pass("Validated GET /users?username=somename returns only 1 record");
 
     }
 
@@ -86,7 +96,7 @@ public class ExtendedTestSteps {
 
         List<Post> listOfPosts = Arrays.asList(res.as(Post[].class));
 
-        LOGGER.info("POST Response " + listOfPosts.size());
+        LOGGER.pass("Validated GET Posts response schema");
 
     }
 
@@ -114,19 +124,45 @@ public class ExtendedTestSteps {
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
         validateResponseSchema(res, "comment.json");
 
+        LOGGER.pass("Validated GET comments response schema");
+
     }
 
     @Then("^Verify email format for each retrieved comment$")
     public void validate_email_format_for_each_comment() {
-        //get /comments response from ScenarioContext and map it to a List Object
+        //get /comments response from ScenarioContext and map it to a List of Comments Object
         res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
 
         List<Comment> listOfComments = Arrays.asList(res.as(Comment[].class));
-        for (Comment currentComment : listOfComments) {
-            boolean validEmail = EmailValidator.getInstance().isValid(currentComment.getemail());
-            assertTrue(validEmail, "Email field has invalid format : " + currentComment.getemail());
-            LOGGER.info("For postId : " + currentComment.getpostId() + " & commentId " + currentComment.getId() + " email " + currentComment.getemail() + " format is valid.");
+        validateEmailFormat(listOfComments);
+        LOGGER.pass("Validated all posts comments for user");
+    }
+
+    @When("^I iterate through individual '([^\"]+)' comments from '([^\"]+)' and validate email format$")
+    public void iterate_through_individual_postid_comments_and_validate_email_format(String queryParamKey, String queryParamsValueList) {
+
+        Integer[] listOfPostIds = (Integer[]) testContext.getScenarioContext().getContext(ContextEnums.valueOf(queryParamsValueList));
+
+        for (int i = 0; i < listOfPostIds.length; i++) {
+
+            restTemplate.resetRequestQueryParams();
+            //set postId = i in queryparams
+            LOGGER.info("Setting query params " +  queryParamKey + " as : " + listOfPostIds[i]);
+            restTemplate.setRequestQueryParams(queryParamKey, Integer.toString(listOfPostIds[i]));
+            //execute GET request on /comments?postId=i
+            commonSteps.user_submits_the_GET_request_and_save_response();
+
+            //get /comments?postId=i response from ScenarioContext and map it to a List Object
+            res = (Response) testContext.scenarioContext.getResponse(ContextEnums.RESPONSE);
+
+            List<Comment> listOfPostComments = Arrays.asList(res.as(Comment[].class));
+
+            //validate email formats for comments retrieved from /comments?postId=i
+            validateEmailFormat(listOfPostComments);
+            LOGGER.pass("Validated all Post comments..");
+
         }
+
     }
 
 }

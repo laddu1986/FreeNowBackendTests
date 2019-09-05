@@ -1,16 +1,20 @@
 package com.freenow.api.utils;
 
 import static com.freenow.api.utils.Assertions.assertEquals;
+import static com.freenow.api.utils.Assertions.assertTrue;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.List;
 
+import com.freenow.api.common.model.post.Comment;
 import com.freenow.global.utils.FileUtils;
 import com.freenow.global.utils.LogUtils;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import io.restassured.response.Response;
+import org.apache.commons.validator.routines.EmailValidator;
 
 /*
  * This is class contains all the helper methods required by ApiTestSuite class
@@ -26,7 +30,6 @@ public class TestUtils {
 
 		try {
 			assertEquals(	res.getStatusCode(), statusCode, "Response Http Status code is as not as expected");
-			LOGGER.info("Http Response Status code is as expected : " + statusCode);
 		} catch (AssertionError e) {
 
 			LOGGER.fail("API Response Http Status expected was [" + res.getStatusCode() + "] and actual is [" + statusCode +"]");
@@ -50,4 +53,14 @@ public class TestUtils {
 		}
 	}
 
+	//This method validates email format of all the email attributes in a list of comments
+	public static void validateEmailFormat(List<Comment> commentList) {
+
+		for (Comment currentComment : commentList) {
+			boolean validEmail = EmailValidator.getInstance().isValid(currentComment.getemail());
+			assertTrue(validEmail, "For postId : " + currentComment.getpostId() + " & commentId : " + currentComment.getId() + " email " + currentComment.getemail() + " format is not valid.");
+			LOGGER.info("For postId : " + currentComment.getpostId() + " & commentId " + currentComment.getId() + " email " + currentComment.getemail() + " format is valid.");
+		}
+
+	}
 }

@@ -115,6 +115,9 @@ public class CommonSteps {
     public void verify_user_validates_status_code(int statusCode) {
         // verify if the HTTP Status received in response was [statusCode]
         validateHttpStatus(res, statusCode );
+        LOGGER.pass("Http Response Status code is as expected : " + statusCode);
     }
+
+
 
 }
