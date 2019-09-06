@@ -10,8 +10,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import com.freenow.global.utils.ConfigReader;
-
 /**
  * This class provides Extent Helper methods
  *

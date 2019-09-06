@@ -64,6 +64,7 @@ Logs are stored under respective date folder under "output/<env>/logs" directory
 **CircleCI Dashboard:**
 
 CircleCI Dashboard Url: https://circleci.com/gh/far11ven/freenow-backend-tests
+Test Run Report: https://22-205881772-gh.circle-artifacts.com/0/reports/Test_Report_final.html
 
 ![alt text](https://raw.githubusercontent.com/far11ven/freenow-backend-tests/develop/src/test/resources/images/Screenshot_CircleCI.png)
 
