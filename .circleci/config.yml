@@ -1,0 +1,40 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+
+    working_directory: ~/repo # directory where steps will run
+
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:8-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
+
+    steps: # a collection of executable commands
+
+      - checkout # check out source code to working directory
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: maven install
+          command: mvn clean install -DskipTests
+        # Save cache dependencies
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+        # Run Cucumber Tests using maven
+      - run:
+          name: Run tests
+          command: mvn test -Denv="test" -Dcucumber.options="features/*" -Dcucumber.options="--tags @api" -Dmode="api"
+        # save test results
+      - store_artifacts:
+          path: ~/repo/output/test
+          destination: reports
+      - store_test_results:
+          path: ~/repo/output
